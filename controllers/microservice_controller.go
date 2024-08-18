@@ -10,10 +10,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"k8s.io/apimachinery/pkg/util/sets"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	examplev1 "github.com/alvdevcl/microservice-operator/api/v1"
@@ -157,7 +155,7 @@ func (r *MicroserviceReconciler) serviceForMicroservice(m *examplev1.Microservic
 }
 
 func (r *MicroserviceReconciler) ingressForMicroservice(m *examplev1.Microservice) *networkingv1.Ingress {
-	labels := map[string]string{"app": m.Spec.Name}
+	// Remove the labels variable as it's unused
 	return &networkingv1.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      m.Spec.Name,
@@ -171,8 +169,12 @@ func (r *MicroserviceReconciler) ingressForMicroservice(m *examplev1.Microservic
 						HTTP: &networkingv1.HTTPIngressRuleValue{
 							Paths: []networkingv1.HTTPIngressPath{
 								{
-									Path:     "/",
-									PathType: (*networkingv1.PathType)(intstr.FromString("Prefix")),
+									Path: "/",
+									// Use this instead of PathType: (*networkingv1.PathType)(intstr.FromString("Prefix"))
+									PathType: func() *networkingv1.PathType {
+										pathType := networkingv1.PathTypePrefix
+										return &pathType
+									}(),
 									Backend: networkingv1.IngressBackend{
 										Service: &networkingv1.IngressServiceBackend{
 											Name: m.Spec.Name,
@@ -189,4 +191,14 @@ func (r *MicroserviceReconciler) ingressForMicroservice(m *examplev1.Microservic
 			},
 		},
 	}
+}
+
+// SetupWithManager sets up the controller with the Manager.
+func (r *MicroserviceReconciler) SetupWithManager(mgr ctrl.Manager) error {
+    return ctrl.NewControllerManagedBy(mgr).
+        For(&examplev1.Microservice{}).
+        Owns(&appsv1.Deployment{}).
+        Owns(&corev1.Service{}).
+        Owns(&networkingv1.Ingress{}).
+        Complete(r)
 }
