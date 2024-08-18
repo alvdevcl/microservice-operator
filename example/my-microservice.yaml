@@ -1,0 +1,10 @@
+apiVersion: example.com/v1
+kind: Microservice
+metadata:
+  name: my-microservice
+spec:
+  name: my-microservice
+  image: nginx:latest
+  replicas: 3
+  port: 80
+  ingressHost: my-microservice.example.com
