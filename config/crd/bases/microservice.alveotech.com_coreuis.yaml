@@ -4,20 +4,20 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: microservices.example.example.com
+  name: coreuis.microservice.alveotech.com
 spec:
-  group: example.example.com
+  group: microservice.alveotech.com
   names:
-    kind: Microservice
-    listKind: MicroserviceList
-    plural: microservices
-    singular: microservice
+    kind: CoreUI
+    listKind: CoreUIList
+    plural: coreuis
+    singular: coreui
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Microservice is the Schema for the microservices API
+        description: CoreUI is the Schema for the coreuis API
         properties:
           apiVersion:
             description: |-
@@ -37,26 +37,20 @@ spec:
           metadata:
             type: object
           spec:
-            description: MicroserviceSpec defines the desired state of Microservice
+            description: CoreUISpec defines the desired state of CoreUI
             properties:
               image:
                 type: string
-              ingressHost:
-                type: string
-              name:
-                description: |-
-                  Foo is an example field of Microservice. Edit microservice_types.go to remove/update
-                  Foo string `json:"foo,omitempty"`
-                type: string
-              port:
-                format: int32
-                type: integer
               replicas:
+                description: Add fields here
                 format: int32
                 type: integer
+            required:
+            - image
+            - replicas
             type: object
           status:
-            description: MicroserviceStatus defines the observed state of Microservice
+            description: CoreUIStatus defines the observed state of CoreUI
             type: object
         type: object
     served: true

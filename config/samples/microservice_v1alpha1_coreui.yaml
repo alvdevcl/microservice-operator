@@ -1,9 +1,9 @@
-apiVersion: example.example.com/v1
-kind: Microservice
+apiVersion: microservice.alveotech.com/v1alpha1
+kind: CoreUI
 metadata:
   labels:
     app.kubernetes.io/name: microservice-operator
     app.kubernetes.io/managed-by: kustomize
-  name: microservice-sample
+  name: coreui-sample
 spec:
   # TODO(user): Add fields here

@@ -1,23 +1,23 @@
-# permissions for end users to view microservices.
+# permissions for end users to view coreuis.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/name: microservice-operator
     app.kubernetes.io/managed-by: kustomize
-  name: microservice-viewer-role
+  name: coreui-viewer-role
 rules:
 - apiGroups:
-  - example.example.com
+  - microservice.alveotech.com
   resources:
-  - microservices
+  - coreuis
   verbs:
   - get
   - list
   - watch
 - apiGroups:
-  - example.example.com
+  - microservice.alveotech.com
   resources:
-  - microservices/status
+  - coreuis/status
   verbs:
   - get

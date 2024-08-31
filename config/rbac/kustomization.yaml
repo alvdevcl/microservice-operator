@@ -20,5 +20,5 @@ resources:
 # default, aiding admins in cluster management. Those roles are
 # not used by the Project itself. You can comment the following lines
 # if you do not want those helpers be installed with your Project.
-- microservice_editor_role.yaml
-- microservice_viewer_role.yaml
+- coreui_editor_role.yaml
+- coreui_viewer_role.yaml

@@ -24,7 +24,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/alvdevcl/microservice-operator/test/utils"
+	"bitbucket.org/asset-control-acx/k8s-operator/test/utils"
 )
 
 const namespace = "microservice-operator-system"

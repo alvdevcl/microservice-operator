@@ -1,4 +1,4 @@
 ## Append samples of your project ##
 resources:
-- example_v1_microservice.yaml
+- microservice_v1alpha1_coreui.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples

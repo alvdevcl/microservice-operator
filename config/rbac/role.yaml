@@ -5,9 +5,9 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
-  - apps
+  - microservice.alveotech.com
   resources:
-  - deployments
+  - coreuis
   verbs:
   - create
   - delete
@@ -17,52 +17,16 @@ rules:
   - update
   - watch
 - apiGroups:
-  - ""
+  - microservice.alveotech.com
   resources:
-  - services
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - example.com
-  resources:
-  - microservices
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - example.com
-  resources:
-  - microservices/finalizers
+  - coreuis/finalizers
   verbs:
   - update
 - apiGroups:
-  - example.com
+  - microservice.alveotech.com
   resources:
-  - microservices/status
+  - coreuis/status
   verbs:
   - get
   - patch
   - update
-- apiGroups:
-  - networking.k8s.io
-  resources:
-  - ingresses
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
