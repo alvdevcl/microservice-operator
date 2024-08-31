@@ -12,37 +12,37 @@ import (
 	microservicev1alpha1 "github.com/alvdevcl/microservice-operator/api/v1alpha1"
 )
 
-// CoreUIReconciler reconciles a CoreUI object
-type CoreUIReconciler struct {
+// AuthenticationServiceReconciler reconciles a AuthenticationService object
+type AuthenticationServiceReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=microservice.example.com,resources=coreuis,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=microservice.example.com,resources=coreuis/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=microservice.example.com,resources=coreuis/finalizers,verbs=update
+//+kubebuilder:rbac:groups=microservice.example.com,resources=AuthenticationServices,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=microservice.example.com,resources=AuthenticationServices/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=microservice.example.com,resources=AuthenticationServices/finalizers,verbs=update
 
-func (r *CoreUIReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *AuthenticationServiceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := log.FromContext(ctx)
 
-	// Fetch the CoreUI instance
-	coreui := &microservicev1alpha1.CoreUI{}
-	err := r.Get(ctx, req.NamespacedName, coreui)
+	// Fetch the AuthenticationService instance
+	AuthenticationService := &microservicev1alpha1.AuthenticationService{}
+	err := r.Get(ctx, req.NamespacedName, AuthenticationService)
 	if err != nil {
 		if errors.IsNotFound(err) {
 			// Object not found, return. Created objects are automatically garbage collected.
-			log.Info("CoreUI resource not found. Ignoring since object must be deleted")
+			log.Info("AuthenticationService resource not found. Ignoring since object must be deleted")
 			return ctrl.Result{}, nil
 		}
 		// Error reading the object - requeue the request.
-		log.Error(err, "Failed to get CoreUI")
+		log.Error(err, "Failed to get AuthenticationService")
 		return ctrl.Result{}, err
 	}
 
 	// Define your business logic here, like creating Deployment, Service, Ingress, etc.
 
-	// Example of creating a Deployment for CoreUI (This code should be in a separate function ideally)
-	deployment := r.createDeployment(coreui)
+	// Example of creating a Deployment for AuthenticationService (This code should be in a separate function ideally)
+	deployment := r.createDeployment(AuthenticationService)
 
 	// Check if the deployment already exists, if not create a new one
 	found := &appsv1.Deployment{}
@@ -59,25 +59,25 @@ func (r *CoreUIReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 		return ctrl.Result{}, err
 	}
 
-	// Update the CoreUI status (if necessary)
-	// coreui.Status.XYZ = "new-status"
-	// err = r.Status().Update(ctx, coreui)
+	// Update the AuthenticationService status (if necessary)
+	// AuthenticationService.Status.XYZ = "new-status"
+	// err = r.Status().Update(ctx, AuthenticationService)
 	// if err != nil {
-	//    log.Error(err, "Failed to update CoreUI status")
+	//    log.Error(err, "Failed to update AuthenticationService status")
 	//    return ctrl.Result{}, err
 	// }
 
 	return ctrl.Result{}, nil
 }
 
-func (r *CoreUIReconciler) createDeployment(coreui *microservicev1alpha1.CoreUI) *appsv1.Deployment {
-	labels := map[string]string{"app": "coreui"}
-	replicas := coreui.Spec.Replicas
+func (r *AuthenticationServiceReconciler) createDeployment(AuthenticationService *microservicev1alpha1.AuthenticationService) *appsv1.Deployment {
+	labels := map[string]string{"app": "AuthenticationService"}
+	replicas := AuthenticationService.Spec.Replicas
 
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      coreui.Name,
-			Namespace: coreui.Namespace,
+			Name:      AuthenticationService.Name,
+			Namespace: AuthenticationService.Namespace,
 		},
 		Spec: appsv1.DeploymentSpec{
 			Replicas: &replicas,
@@ -90,8 +90,8 @@ func (r *CoreUIReconciler) createDeployment(coreui *microservicev1alpha1.CoreUI)
 				},
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{{
-						Image: coreui.Spec.Image,
-						Name:  "coreui",
+						Image: AuthenticationService.Spec.Image,
+						Name:  "authentication-service",
 						Ports: []corev1.ContainerPort{{
 							ContainerPort: 80,
 						}},
@@ -101,13 +101,13 @@ func (r *CoreUIReconciler) createDeployment(coreui *microservicev1alpha1.CoreUI)
 		},
 	}
 
-	// Set CoreUI instance as the owner and controller
-	ctrl.SetControllerReference(coreui, deployment, r.Scheme)
+	// Set AuthenticationService instance as the owner and controller
+	ctrl.SetControllerReference(AuthenticationService, deployment, r.Scheme)
 	return deployment
 }
 
-func (r *CoreUIReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *AuthenticationServiceReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&microservicev1alpha1.CoreUI{}).
+		For(&microservicev1alpha1.AuthenticationService{}).
 		Complete(r)
 }

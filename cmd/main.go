@@ -1,7 +1,7 @@
 import (
 	...
-	microservicev1alpha1 "bitbucket.org/asset-control-acx/k8s-operator/k8s-operator/api/v1alpha1"
-	"bitbucket.org/asset-control-acx/k8s-operator/k8s-operator/controllers"
+	microservicev1alpha1 "github.com/alvdevcl/microservice-operator/api/v1alpha1"
+	"github.com/alvdevcl/microservice-operator/controllers"
 )
 
 func main() {
